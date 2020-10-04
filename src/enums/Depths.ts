@@ -9,4 +9,5 @@ export enum Depths {
     SATELLITE,
     EXPLOSION,
     FLY_TEXT,
+    UI
 }

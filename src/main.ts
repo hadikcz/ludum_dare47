@@ -17,7 +17,7 @@ const config = {
     physics: {
         default: 'matter',
         matter: {
-            // debug: true,
+            debug: true,
             gravity: {
                 scale: 0
             },
@@ -51,6 +51,7 @@ const config = {
     ]
 };
 window.level = 1;
+window.firstGame = true;
 const game = new Phaser.Game(config);
 //
 // let stats = new Stats();

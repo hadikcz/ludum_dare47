@@ -6,12 +6,14 @@ import OrbitalObject from "entity/OrbitalObject";
 import GameConfig from "config/GameConfig";
 import Planet from "entity/Planet";
 import Asteroid from "entity/Asteroid";
+import Satelite from "entity/Satelite";
 
 export default class Ship extends OrbitalObject {
 
     public scene!: GameScene;
     private cursors: Phaser.Types.Input.Keyboard.CursorKeys;
     private emitter: Phaser.GameObjects.Particles.ParticleEmitter;
+    private rcsEmitter: Phaser.GameObjects.Particles.ParticleEmitter;
     private particles: Phaser.GameObjects.Particles.ParticleEmitterManager;
 
     private static readonly EMITTER_GRAVITY = 3000;
@@ -42,6 +44,14 @@ export default class Ship extends OrbitalObject {
             // @ts-ignore
             scale: {start: 1, end: 0},
         });
+
+
+        this.rcsEmitter = this.particles.createEmitter({
+            speed: 100,
+            // @ts-ignore
+            scale: {start: 1, end: 0},
+        });
+        this.rcsEmitter.stop();
         this.particles.setDepth(Depths.THRUSTER_PARTICLE);
 
         this.on('collide', (a, b): void => {
@@ -50,7 +60,7 @@ export default class Ship extends OrbitalObject {
                 this.scene.effectManager.launchExplosion(this.x, this.y, 32);
                 this.scene.cameras.main.flash(100, 255, 0, 0, true);
             }
-            if (b.gameObject instanceof Asteroid) {
+            if (b.gameObject instanceof Asteroid || b.gameObject instanceof Satelite) {
                 this.hp -= 15;
                 this.scene.cameras.main.flash(100, 255, 0, 0, true);
                 this.scene.effectManager.launchExplosion(this.x, this.y, 32);
@@ -77,23 +87,26 @@ export default class Ship extends OrbitalObject {
 
         this.emitter.setGravity(Math.cos(this.angle - Math.PI)  * Ship.EMITTER_GRAVITY, Math.sin(this.rotation - Math.PI) * Ship.EMITTER_GRAVITY);
         this.emitter.setPosition(this.x, this.y);
+        this.rcsEmitter.setPosition(this.x, this.y);
     }
 
     private handleControls(): void {
-        let distance = Phaser.Math.Distance.BetweenPoints(this, this.scene.planet);
 
         if (!this.isInRange()) {
             this.emitter.stop();
+            this.rcsEmitter.stop();
             return;
         }
         if (this.energy <= 0) {
             this.energy = 0;
             this.emitter.stop();
+            this.rcsEmitter.stop();
             return;
         }
 
         if (this.scene.dataUploading.winInProgress) {
             this.emitter.stop();
+            this.rcsEmitter.stop();
             return;
         }
 
@@ -114,24 +127,28 @@ export default class Ship extends OrbitalObject {
         if (this.cursors.down.isDown) {
             this.energy -= 0.5;
             this.enableRcsSystem();
-        } else if (this.body.airFriction === Ship.RCS_AIR_FRICTION) {
+        } else {
             this.disableRcsSystem();
         }
     }
 
     private enableRcsSystem(): void {
         this.setFrictionAir(Ship.RCS_AIR_FRICTION);
+        this.rcsEmitter.start();
         $('.rcsStatus').removeClass('hide');
     }
 
     private disableRcsSystem(): void {
-        this.setFrictionAir(0);
+        if (!this.isInAtmosphere())
+            this.setFrictionAir(0);
+        this.rcsEmitter.stop();
         $('.rcsStatus').addClass('hide');
     }
 
     destroy(fromScene?: boolean) {
         super.destroy(fromScene);
         this.emitter.stop();
+        this.rcsEmitter.stop();
     }
 
     getEnergy(): number {
@@ -141,5 +158,10 @@ export default class Ship extends OrbitalObject {
     isInRange(): boolean {
         let distance = Phaser.Math.Distance.BetweenPoints(this, this.scene.planet);
         return distance <= GameConfig.RemoteControlRadius;
+    }
+
+    isInAtmosphere(): boolean {
+        let distance = Phaser.Math.Distance.BetweenPoints(this, this.scene.planet);
+        return distance <= GameConfig.Planet.Atmosphere.outer;
     }
 }

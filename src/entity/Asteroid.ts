@@ -10,7 +10,7 @@ export default class Asteroid extends OrbitalObject {
     public scene!: GameScene;
 
     constructor(scene: GameScene, x: number, y: number, initialVelocityX: number, initialVelocityY: number, mass = 1, scale = 1) {
-        super(scene, x, y, 'asteroid', 0xFF0000);
+        super(scene, x, y, 'asteroid', 0xFF0000, {type: 'circle'});
 
         this.setMass(mass);
         this.setScale(scale);

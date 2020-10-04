@@ -10,6 +10,7 @@ import DataUploading from "core/DataUploading";
 import GameConfig from "config/GameConfig";
 import Point = Phaser.Geom.Point;
 import {Depths} from "enums/Depths";
+import $ from 'jquery';
 import NumberHelpers from "helpers/NumberHelpers";
 
 declare let window: any;
@@ -59,6 +60,19 @@ export default class GameScene extends Phaser.Scene {
         this.matter.add.mouseSpring();
 
         this.ui = new UI(this);
+
+        if (window.firstGame) {
+            window.firstGame = false;
+            let helpImg = this.add.image(GameConfig.World.size.width / 2, GameConfig.World.size.height / 2, 'help').setDepth(Depths.UI);
+            this.scene.pause();
+            $('#play').show();
+            $('#play').on('click', () => {
+                $('#play').hide();
+                this.scene.resume();
+                helpImg.destroy();
+            });
+        }
+
     }
 
     update (): void {
@@ -105,10 +119,10 @@ export default class GameScene extends Phaser.Scene {
         for (let i = 0; i < 250; i++) {
             this.createStar(0xFFFFFF);
         }
-        for (let i = 0; i < 30; i++) {
+        for (let i = 0; i < 15; i++) {
             this.createStar(0xff660d);
         }
-        for (let i = 0; i < 30; i++) {
+        for (let i = 0; i < 15; i++) {
             this.createStar(0x34c0eb);
         }
     }

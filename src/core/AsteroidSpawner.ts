@@ -18,7 +18,7 @@ export default class AsteroidSpawner {
         this.asteroidGroup = this.scene.add.group();
 
         this.scene.time.addEvent({
-            delay: 600,
+            delay: 6000,
             repeat: Infinity,
             callbackScope: this,
             callback: this.spawnRandomAsteroid

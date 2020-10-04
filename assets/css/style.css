@@ -126,3 +126,14 @@ a {text-decoration: none;}
     font-size: 25px;
     margin-bottom: 20px;
 }
+
+#play {
+    position: absolute;
+    top: 520px;
+    left: 50%;
+    font-size: 45px;
+    transform: translateX(-50%);
+    cursor: pointer;
+    background: #ac0b0b;
+    padding: 5px;
+}
