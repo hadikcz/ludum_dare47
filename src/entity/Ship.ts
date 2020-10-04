@@ -4,6 +4,8 @@ import Phaser from "phaser";
 import {Depths} from "enums/Depths";
 import OrbitalObject from "entity/OrbitalObject";
 import GameConfig from "config/GameConfig";
+import Planet from "entity/Planet";
+import Asteroid from "entity/Asteroid";
 
 export default class Ship extends OrbitalObject {
 
@@ -15,6 +17,7 @@ export default class Ship extends OrbitalObject {
     private static readonly EMITTER_GRAVITY = 3000;
     private static readonly RCS_AIR_FRICTION = 0.01;
     private energy = 100;
+    private destroyInNextTick = false;
 
     constructor(scene: GameScene, x: number, y: number,) {
         super(scene, x, y, 'satellite', 0x00FF00, {
@@ -39,10 +42,21 @@ export default class Ship extends OrbitalObject {
             scale: {start: 1, end: 0},
         });
         this.particles.setDepth(Depths.THRUSTER_PARTICLE);
+
+        this.on('collide', (a, b): void => {
+            if (b.gameObject instanceof Planet || b.gameObject instanceof Asteroid) {
+                this.scene.effectManager.launchExplosion(this.x, this.y, 32);
+                this.destroyInNextTick = true;
+            }
+        });
     }
 
     update(): void {
         super.update();
+        if (this.destroyInNextTick) {
+            this.destroy();
+            this.destroyInNextTick = false;
+        }
         if (this.body === undefined) return;
 
         if (this.energy < 100)

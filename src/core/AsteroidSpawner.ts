@@ -25,14 +25,43 @@ export default class AsteroidSpawner {
         });
     }
 
-    private spawnRandomAsteroid(): void {
+    private spawnRandomAsteroid(mass = 3, scale = 1, velocityX = 0, velocityY = 0, x?: number, y?: number): void {
         let spawn = this.getRandomSpawnOutsideOfMap();
         let range = 4;
+
         let randomVelocityX = NumberHelpers.randomFloatInRange(-range, range);
         let randomVelocityY = NumberHelpers.randomFloatInRange(-range, range);
 
-        let asteroid = new Asteroid(this.scene, spawn.x, spawn.y, randomVelocityX, randomVelocityY);
+        if (x !== undefined && y !== undefined) {
+            spawn.x = x;
+            spawn.y = y;
+        }
+
+        let asteroid = new Asteroid(this.scene, spawn.x, spawn.y, velocityX || randomVelocityX, velocityY || randomVelocityY, mass, scale);
         this.asteroidGroup.add(asteroid);
+        asteroid.on('destroy', () => {
+            this.asteroidSplash(asteroid);
+        });
+
+        asteroid.on('hitPlayer', () => {
+            console.log('hit player B');
+            this.asteroidSplash(asteroid);
+        });
+    }
+
+    private asteroidSplash(asteroid: Asteroid): void {
+        if (asteroid.scaleX > 0.5) {
+            for (let i = 0; i < NumberHelpers.randomIntInRange(1, 3); i++) {
+                this.spawnRandomAsteroid(
+                    asteroid.body.mass * 2,
+                    asteroid.scale - 0.25,
+                    asteroid.body.velocity.x + NumberHelpers.randomIntInRange(-1, 1),
+                    asteroid.body.velocity.y + NumberHelpers.randomIntInRange(-1, 1),
+                    asteroid.x + NumberHelpers.randomIntInRange(-20, 20),
+                    asteroid.y + NumberHelpers.randomIntInRange(-20, 20)
+                );
+            }
+        }
     }
 
     private getRandomSpawnOutsideOfMap(): Point {

@@ -1,5 +1,4 @@
 import GameScene from "scenes/GameScene";
-import Planet from "entity/Planet";
 import GameConfig from "config/GameConfig";
 import Phaser from 'phaser';
 import Point = Phaser.Geom.Point;
@@ -34,12 +33,6 @@ export default abstract class OrbitalObject extends Phaser.Physics.Matter.Image 
         });
 
 
-        this.on('collide', (a, b): void => {
-            if (b.gameObject instanceof Planet || b.gameObject instanceof OrbitalObject) {
-                this.scene.effectManager.launchExplosion(this.x, this.y, 32);
-                this.destroy();
-            }
-        });
     }
 
     update(): void {

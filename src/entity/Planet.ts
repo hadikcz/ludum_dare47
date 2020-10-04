@@ -39,6 +39,10 @@ export default class Planet extends Phaser.Physics.Matter.Image {
         this.createMaxRemoteControlRadius();
     }
 
+    preUpdate (): void {
+        this.angle -= 0.15;
+    }
+
     private createAtmosphere(): void {
         this.scene.add.circle(this.x, this.y, 128, 0x5ea2eb, 0.5);
         this.scene.add.circle(this.x, this.y, 156, 0x5ea2eb, 0.5);
