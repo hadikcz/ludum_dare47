@@ -14,9 +14,15 @@ const config = {
     width: GameConfig.PhaserBasicSettings.gameSize.width,
     height: GameConfig.PhaserBasicSettings.gameSize.height,
     backgroundColor: GameConfig.PhaserBasicSettings.backgroundColor,
+    fps: {
+        target: 60,
+        forceSetTimeOut: true
+    },
     physics: {
+        fps: 60,
         default: 'matter',
         matter: {
+            fps: 60,
             // debug: true,
             gravity: {
                 scale: 0
