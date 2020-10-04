@@ -1,4 +1,4 @@
-## [PLAY ON WEB!](https://hadikcz.github.io/LudumDare47/build/)
+## [PLAY ON WEB!](https://hadikcz.github.io/ludum_dare47/build/)
 
 ![Image of game](https://raw.githubusercontent.com/hadikcz/LudumDare47/master/screens/Screenshot%202020-04-20%20at%2003.12.37.png)
 
