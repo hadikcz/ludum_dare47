@@ -7,7 +7,7 @@
   "scripts": {
     "start": "npm run dev",
     "dev": "webpack --mode development --config webpack.config.ts.js --progress --profile --colors --watch",
-    "build": "npm run test && webpack --config webpack.production.config.js --progress --profile --colors"
+    "build": "webpack --config webpack.production.config.js --progress --profile --colors"
   },
   "license": "MIT",
   "devDependencies": {

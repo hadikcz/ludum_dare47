@@ -110,20 +110,25 @@ export default class Ship extends OrbitalObject {
             return;
         }
 
+// @ts-ignore
         if (this.cursors.left.isDown) {
             this.angle -= 3;
+// @ts-ignore
         } else if (this.cursors.right.isDown) {
             this.angle += 3;
         }
         // this.emitter.setGravity(0, -500);
 
+// @ts-ignore
         if (this.cursors.up.isDown) {
             this.energy -= 0.1;
+// @ts-ignore
             this.thrust(0.0003 * this.body.mass);
             this.emitter.start();
         } else {
             this.emitter.stop();
         }
+// @ts-ignore
         if (this.cursors.down.isDown) {
             this.energy -= 0.5;
             this.enableRcsSystem();

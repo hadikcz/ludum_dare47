@@ -37,6 +37,7 @@ export default class DataUploading {
     }
 
     async win(): Promise<void> {
+// @ts-ignore
         if (window.level === GameConfig.LastLevel) {
             this.scene.ui.showGameOver();
             console.log('game over');
@@ -44,6 +45,7 @@ export default class DataUploading {
             this.scene.ui.showWin();
         }
         await delay(5000);
+// @ts-ignore
         if (window.level === GameConfig.LastLevel) return;
         this.scene.ui.hideWin();
         await delay(1000);

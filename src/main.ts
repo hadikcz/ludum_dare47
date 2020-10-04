@@ -50,8 +50,11 @@ const config = {
         WinScene
     ]
 };
+// @ts-ignore
 window.level = 1;
+// @ts-ignore
 window.firstGame = true;
+// @ts-ignore
 const game = new Phaser.Game(config);
 //
 // let stats = new Stats();

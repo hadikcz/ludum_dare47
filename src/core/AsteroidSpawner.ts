@@ -53,9 +53,12 @@ export default class AsteroidSpawner {
         if (asteroid.scaleX > 0.5) {
             for (let i = 0; i < NumberHelpers.randomIntInRange(1, 3); i++) {
                 this.spawnRandomAsteroid(
+// @ts-ignore
                     asteroid.body.mass * 2,
                     asteroid.scale - 0.25,
+// @ts-ignore
                     asteroid.body.velocity.x + NumberHelpers.randomIntInRange(-1, 1),
+// @ts-ignore
                     asteroid.body.velocity.y + NumberHelpers.randomIntInRange(-1, 1),
                     asteroid.x + NumberHelpers.randomIntInRange(-20, 20),
                     asteroid.y + NumberHelpers.randomIntInRange(-20, 20)

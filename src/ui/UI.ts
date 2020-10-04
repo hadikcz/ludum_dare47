@@ -23,6 +23,7 @@ export default class UI {
     }
 
     showWin(): void {
+// @ts-ignore
         $('#level').html(window.level);
         $('#data').html(this.scene.dataUploading.getUploaded());
         $('.winPart').hide();
@@ -54,12 +55,16 @@ export default class UI {
             $('#energy').html(emoji);
             return;
         }
+// @ts-ignore
         let speedX = Math.floor(this.scene.ship.body.velocity.x * 10);
+// @ts-ignore
         let speedY = Math.floor(this.scene.ship.body.velocity.y * 10);
         let diff = Phaser.Math.Average([Math.abs(speedX), Math.abs(speedY)]);
+// @ts-ignore
         $('#orbitalSpeed').html(parseInt(diff));
 
         let distance = Phaser.Math.Distance.BetweenPoints(this.scene.ship, this.scene.planet);
+// @ts-ignore
         $('#distanceFromPlanet').html(parseInt(distance * 5));
 
         if (distance > GameConfig.RemoteControlRadius) {
@@ -75,6 +80,7 @@ export default class UI {
         }
 
         let shipEnergy = this.scene.ship.getEnergy();
+// @ts-ignore
         $('#energy').html(parseInt(shipEnergy));
         if (shipEnergy < 25) {
             $('#energy').addClass('low');
