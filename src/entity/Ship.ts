@@ -7,6 +7,7 @@ import GameConfig from "config/GameConfig";
 import Planet from "entity/Planet";
 import Asteroid from "entity/Asteroid";
 import Satelite from "entity/Satelite";
+import NumberHelpers from "helpers/NumberHelpers";
 
 export default class Ship extends OrbitalObject {
 
@@ -61,7 +62,7 @@ export default class Ship extends OrbitalObject {
                 this.scene.cameras.main.flash(100, 255, 0, 0, true);
             }
             if (b.gameObject instanceof Asteroid || b.gameObject instanceof Satelite) {
-                this.hp -= 15;
+                this.hp -= NumberHelpers.randomIntInRange(5, 10);
                 this.scene.cameras.main.flash(100, 255, 0, 0, true);
                 this.scene.effectManager.launchExplosion(this.x, this.y, 32);
             }
