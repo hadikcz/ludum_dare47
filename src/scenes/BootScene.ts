@@ -24,10 +24,10 @@ export default class BootScene extends Phaser.Scene {
         }, this);
 
         // LOAD assets HERE
-        this.load.atlas('assets', 'assets/images/assets.png', 'assets/images/assets.json');
-        this.load.spritesheet('characters', 'assets/images/characters.png', { frameWidth: 36, frameHeight: 36, endFrame: 40 });
-        this.load.image('mobPlaceholder', 'assets/images/mobPlaceholder.png');
-        this.load.image('tiles32', 'assets/images/tiles32.png');
+        this.load.image('planet', 'assets/images/planet.png');
+        this.load.image('satellite', 'assets/images/satelite.png');
+        this.load.image('particle', 'assets/images/particle.png');
+        this.load.image('asteroid', 'assets/images/asteroid.png');
     }
 
     private startGame (): void {

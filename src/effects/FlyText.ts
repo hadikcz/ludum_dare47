@@ -12,7 +12,6 @@ export default class FlyText extends Phaser.GameObjects.Text {
         } as unknown as TextStyle);
 
         this.setScale(.5);
-        this.scene.physics.world.enable(this);
         this.scene.add.existing(this);
 
         this.setStroke('#7b4401', 8);
