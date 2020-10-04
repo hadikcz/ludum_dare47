@@ -1,5 +1,7 @@
 import GameScene from "scenes/GameScene";
 import TimerEvent = Phaser.Time.TimerEvent;
+import delay from "delay";
+import GameConfig from "config/GameConfig";
 
 export default class DataUploading {
 
@@ -7,6 +9,7 @@ export default class DataUploading {
     private uploaded: number = 0;
     private timeLoop: TimerEvent;
     private uploadLimit: number;
+    public winInProgress = false;
 
     constructor(scene: GameScene, uploadLimit: number = 30) {
         this.scene = scene;
@@ -18,6 +21,41 @@ export default class DataUploading {
             callbackScope: this,
             callback: this.loop
         });
+
+        this.scene.ship.on('kill', () => {
+            if (this.winInProgress) return;
+            this.winInProgress = true;
+            this.lose();
+        });
+    }
+
+    update(): void {
+        if (this.uploaded >= this.uploadLimit && !this.winInProgress) {
+            this.winInProgress = true;
+            this.win();
+        }
+    }
+
+    async win(): Promise<void> {
+        if (window.level === GameConfig.LastLevel) {
+            this.scene.ui.showGameOver();
+            console.log('game over');
+        } else {
+            this.scene.ui.showWin();
+        }
+        await delay(5000);
+        if (window.level === GameConfig.LastLevel) return;
+        this.scene.ui.hideWin();
+        await delay(1000);
+        this.scene.scene.restart();
+    }
+
+    async lose(): Promise<void> {
+        this.scene.ui.showLose();
+        await delay(5000);
+        this.scene.ui.hideWin();
+        await delay(1000);
+        this.scene.scene.restart();
     }
 
     getUploaded(): number {

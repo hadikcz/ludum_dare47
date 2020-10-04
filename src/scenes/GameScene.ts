@@ -86,12 +86,12 @@ export default class GameScene extends Phaser.Scene {
     getUploadLimit(level: number): number {
         switch (level) {
             case 1:
-                return 45;
+            default:
+                return 30;
             case 2:
-                return 75;
+                return 50;
             case 3:
-                return 95;
+                return 70;
         }
-        return 45;
     }
 }

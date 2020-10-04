@@ -21,5 +21,6 @@ export default {
         inner: 0.04,
         outer: 0.01
     },
-    RemoteControlRadius: 500
+    RemoteControlRadius: 500,
+    LastLevel: 3
 };

@@ -45,6 +45,7 @@ export default class Ship extends OrbitalObject {
 
         this.on('collide', (a, b): void => {
             if (b.gameObject instanceof Planet || b.gameObject instanceof Asteroid) {
+                this.emit('kill');
                 this.scene.effectManager.launchExplosion(this.x, this.y, 32);
                 this.destroyInNextTick = true;
             }
@@ -77,6 +78,11 @@ export default class Ship extends OrbitalObject {
         }
         if (this.energy <= 0) {
             this.energy = 0;
+            this.emitter.stop();
+            return;
+        }
+
+        if (this.scene.dataUploading.winInProgress) {
             this.emitter.stop();
             return;
         }

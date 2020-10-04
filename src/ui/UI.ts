@@ -22,6 +22,30 @@ export default class UI {
     hide (): void {
     }
 
+    showWin(): void {
+        $('#level').html(window.level);
+        $('#data').html(this.scene.dataUploading.getUploaded());
+        $('.winPart').hide();
+        $('.levelFinished').show();
+        $('.win').slideDown('slow');
+    }
+
+    hideWin(): void {
+        $('.win').slideUp('slow');
+    }
+
+    showLose(): void {
+        $('.winPart').hide();
+        $('.failed').show();
+        $('.win').slideDown('slow');
+    }
+
+    showGameOver(): void {
+        $('.winPart').hide();
+        $('.gameOver').show();
+        $('.win').slideDown('slow');
+    }
+
     private handleShipSpeeds(): void {
         if (this.scene.ship.body == undefined) {
             let emoji = '💀';
