@@ -3,16 +3,17 @@ import Ship from "entity/Ship";
 import AsteroidSpawner from "core/AsteroidSpawner";
 import EffectManager from "effects/EffectManager";
 import Planet from "entity/Planet";
+import UI from "ui/UI";
 
 declare let window: any;
 
 export default class GameScene extends Phaser.Scene {
 
-    private ship!: Ship;
-    private speedText!: Phaser.GameObjects.Text;
+    public ship!: Ship;
     private asteroidSpawner!: AsteroidSpawner;
     public planet!: Planet;
     public effectManager!: EffectManager;
+    public ui!: UI;
 
     constructor () {
         super({ key: 'GameScene' });
@@ -31,19 +32,12 @@ export default class GameScene extends Phaser.Scene {
 
         // Debug
         this.matter.add.mouseSpring();
-        this.speedText = this.add.text(0, 0, '', { font: '18px Courier', fill: '#00ff00' });
-        // new OrbitObject(this, 30, 30, 8, -2);
+
+        this.ui = new UI(this);
     }
 
     update (): void {
         this.ship.update();
-
-        if (this.ship.body !== undefined) {
-            // Debug
-            let speedX = Math.floor(this.ship.body.velocity.x * 100);
-            let speedY = Math.floor(this.ship.body.velocity.y * 100);
-            let diff = Phaser.Math.Average([Math.abs(speedX), Math.abs(speedY)]);
-            this.speedText.setText(`Velocity X: ${speedX} y: ${speedY} Orbit speed: ${diff}`);
-        }
+        this.ui.update();
     }
 }

@@ -13,7 +13,7 @@ export default class Planet extends Phaser.Physics.Matter.Image {
             // @ts-ignore
             shape: {
                 type: 'circle',
-                radius: 64
+                radius: 55
             },
             plugin: {
                 attractors: [

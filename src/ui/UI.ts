@@ -1,30 +1,60 @@
 import $ from 'jquery';
-import GameConfig from 'config/GameConfig';
 import GameScene from 'scenes/GameScene';
-import WorldEnvironment from "core/WorldEnvironment";
-import Text = Phaser.GameObjects.Text;
-import GameState from "core/GameState";
-import {Depths} from "enums/Depths";
+import Phaser from "phaser";
+import GameConfig from "config/GameConfig";
 
 export default class UI {
 
     private scene: GameScene;
-    private balance!: Text;
-    private clock!: Text;
-    private calendar!: Text;
-    private gameState: GameState;
 
-    constructor (scene: GameScene, gameState: GameState) {
+    constructor (scene: GameScene) {
         this.scene = scene;
-        this.gameState = gameState;
     }
 
     update () {
+        this.handleShipSpeeds();
     }
 
     show (): void {
     }
 
     hide (): void {
+    }
+
+    private handleShipSpeeds(): void {
+        if (this.scene.ship.body == undefined) {
+            let emoji = '💀';
+            $('#orbitalSpeed').html(emoji);
+            $('#distanceFromPlanet').html(emoji);
+            $('#energy').html(emoji);
+            return;
+        }
+        let speedX = Math.floor(this.scene.ship.body.velocity.x * 10);
+        let speedY = Math.floor(this.scene.ship.body.velocity.y * 10);
+        let diff = Phaser.Math.Average([Math.abs(speedX), Math.abs(speedY)]);
+        $('#orbitalSpeed').html(parseInt(diff));
+
+        let distance = Phaser.Math.Distance.BetweenPoints(this.scene.ship, this.scene.planet);
+        $('#distanceFromPlanet').html(parseInt(distance * 5));
+
+        if (distance > GameConfig.RemoteControlRadius) {
+            $('.warning').removeClass('hide');
+            $('.warning').html('Out of range!');
+        } else if (distance <= GameConfig.Planet.Atmosphere.outer) {
+            $('.warning').removeClass('hide');
+            $('.warning').html('DANGER: Atmosphere!');
+        } else {
+            if (!$('.warning').hasClass('hide')) {
+                $('.warning').addClass('hide');
+            }
+        }
+
+        let shipEnergy = this.scene.ship.getEnergy();
+        $('#energy').html(parseInt(shipEnergy));
+        if (shipEnergy < 25) {
+            $('#energy').addClass('low');
+        } else {
+            $('#energy').removeClass('low');
+        }
     }
 }

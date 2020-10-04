@@ -18,8 +18,8 @@ export default {
     },
     AirFriction: {
         default: 0,
-        inner: 0.05,
-        outer: 0.005
+        inner: 0.04,
+        outer: 0.01
     },
     RemoteControlRadius: 500
 };

@@ -1,3 +1,4 @@
+import $ from 'jquery';
 import GameScene from "scenes/GameScene";
 import Phaser from "phaser";
 import {Depths} from "enums/Depths";
@@ -12,9 +13,14 @@ export default class Ship extends OrbitalObject {
     private particles: Phaser.GameObjects.Particles.ParticleEmitterManager;
 
     private static readonly EMITTER_GRAVITY = 3000;
+    private static readonly RCS_AIR_FRICTION = 0.01;
+    private energy = 100;
 
     constructor(scene: GameScene, x: number, y: number,) {
-        super(scene, x, y, 'satellite', 0x00FF00);
+        super(scene, x, y, 'satellite', 0x00FF00, {
+            type: 'circle',
+            radius: 16
+        });
 
         this.cursors = this.scene.input.keyboard.createCursorKeys();
 
@@ -36,7 +42,11 @@ export default class Ship extends OrbitalObject {
     }
 
     update(): void {
+        super.update();
         if (this.body === undefined) return;
+
+        if (this.energy < 100)
+            this.energy += 0.05;
         this.handleControls();
         this.setAngularVelocity(0);
 
@@ -46,8 +56,16 @@ export default class Ship extends OrbitalObject {
 
     private handleControls(): void {
         let distance = Phaser.Math.Distance.BetweenPoints(this, this.scene.planet);
-        console.log(distance);
-        if (distance > GameConfig.RemoteControlRadius) return;
+
+        if (distance > GameConfig.RemoteControlRadius) {
+            this.emitter.stop();
+            return;
+        }
+        if (this.energy <= 0) {
+            this.energy = 0;
+            this.emitter.stop();
+            return;
+        }
 
         if (this.cursors.left.isDown) {
             this.angle -= 3;
@@ -57,28 +75,36 @@ export default class Ship extends OrbitalObject {
         // this.emitter.setGravity(0, -500);
 
         if (this.cursors.up.isDown) {
+            this.energy -= 0.1;
             this.thrust(0.0003 * this.body.mass);
             this.emitter.start();
         } else {
             this.emitter.stop();
         }
         if (this.cursors.down.isDown) {
+            this.energy -= 0.5;
             this.enableRcsSystem();
-        } else {
+        } else if (this.body.airFriction === Ship.RCS_AIR_FRICTION) {
             this.disableRcsSystem();
         }
     }
 
     private enableRcsSystem(): void {
-        this.setFrictionAir(0.005);
+        this.setFrictionAir(Ship.RCS_AIR_FRICTION);
+        $('.rcsStatus').removeClass('hide');
     }
 
     private disableRcsSystem(): void {
         this.setFrictionAir(0);
+        $('.rcsStatus').addClass('hide');
     }
 
     destroy(fromScene?: boolean) {
         super.destroy(fromScene);
         this.emitter.stop();
+    }
+
+    getEnergy(): number {
+        return this.energy;
     }
 }
