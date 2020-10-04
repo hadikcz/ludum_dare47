@@ -60,7 +60,7 @@ a {text-decoration: none;}
 
 .warning {
     animation: blinker 0.5s cubic-bezier(.5, 0, 1, 1) infinite alternate;
-    margin-top: 30px;
+    margin-top: 50px;
     margin-left: 10px;
     font-size: 25px;
     text-align: center;
@@ -86,8 +86,17 @@ a {text-decoration: none;}
 .rcsStatus {
     position: absolute;
     color: lime;
-    bottom: 30px;
+    bottom: 50px;
     margin-left: 10px;
+}
+
+.hp {
+    position: absolute;
+    color: lime;
+    margin-left: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 55px;
 }
 
 .uploaded {

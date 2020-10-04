@@ -3,6 +3,7 @@ import OrbitalObject from "entity/OrbitalObject";
 import {Depths} from "enums/Depths";
 import Planet from "entity/Planet";
 import Ship from "entity/Ship";
+import NumberHelpers from "helpers/NumberHelpers";
 
 export default class Asteroid extends OrbitalObject {
 
@@ -15,6 +16,8 @@ export default class Asteroid extends OrbitalObject {
         this.setScale(scale);
         this.setVelocityX(initialVelocityX);
         this.setVelocityY(initialVelocityY);
+
+        this.setAngularVelocity(NumberHelpers.randomFloatInRange(-0.05, 0.05));
 
         this.setDepth(Depths.ASTEROID);
 

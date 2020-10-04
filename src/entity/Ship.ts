@@ -18,6 +18,7 @@ export default class Ship extends OrbitalObject {
     private static readonly RCS_AIR_FRICTION = 0.01;
     private energy = 100;
     private destroyInNextTick = false;
+    public hp = 100;
 
     constructor(scene: GameScene, x: number, y: number, velocityX = 2, velocityY = -2) {
         super(scene, x, y, 'satellite', 0x00FF00, {
@@ -44,19 +45,28 @@ export default class Ship extends OrbitalObject {
         this.particles.setDepth(Depths.THRUSTER_PARTICLE);
 
         this.on('collide', (a, b): void => {
-            if (b.gameObject instanceof Planet || b.gameObject instanceof Asteroid) {
-                this.emit('kill');
+            if (b.gameObject instanceof Planet) {
+                this.hp = 0;
                 this.scene.effectManager.launchExplosion(this.x, this.y, 32);
-                this.destroyInNextTick = true;
+                this.scene.cameras.main.flash(100, 255, 0, 0, true);
+            }
+            if (b.gameObject instanceof Asteroid) {
+                this.hp -= 15;
+                this.scene.cameras.main.flash(100, 255, 0, 0, true);
+                this.scene.effectManager.launchExplosion(this.x, this.y, 32);
             }
         });
     }
 
-    update(): void {
+    preUpdate(): void {
         super.update();
         if (this.destroyInNextTick) {
             this.destroy();
             this.destroyInNextTick = false;
+        }
+        if (this.hp <= 0 ) {
+            this.emit('kill');
+            this.destroyInNextTick = true;
         }
         if (this.body === undefined) return;
 

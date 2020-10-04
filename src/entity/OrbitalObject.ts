@@ -35,7 +35,7 @@ export default abstract class OrbitalObject extends Phaser.Physics.Matter.Image 
 
     }
 
-    update(): void {
+    preUpdate(): void {
         if (this.body === undefined) return;
         let distance = Phaser.Math.Distance.BetweenPoints(this, this.scene.planet);
         if (distance < GameConfig.Planet.Atmosphere.outer) {
@@ -56,7 +56,7 @@ export default abstract class OrbitalObject extends Phaser.Physics.Matter.Image 
             return;
         }
 
-        this.scene.effectManager.launchTrail(this.previousPosition.x, this.previousPosition.y, this.x, this.y, this.trailColor, 0.5, 1, 1000);
+        this.scene.effectManager.launchTrail(this.previousPosition.x, this.previousPosition.y, this.x, this.y, this.trailColor, 0.5, 1, 300);
         this.previousPosition.setTo(this.x, this.y);
     }
 

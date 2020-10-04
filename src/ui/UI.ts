@@ -81,6 +81,8 @@ export default class UI {
         } else {
             $('#energy').removeClass('low');
         }
+
+        $('#hp').html(this.scene.ship.hp);
     }
 
     private updateUploaded(): void {
