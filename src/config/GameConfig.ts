@@ -20,5 +20,6 @@ export default {
         default: 0,
         inner: 0.05,
         outer: 0.005
-    }
+    },
+    RemoteControlRadius: 500
 };

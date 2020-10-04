@@ -36,10 +36,16 @@ export default class Planet extends Phaser.Physics.Matter.Image {
         this.setDepth(Depths.PLANET);
 
         this.createAtmosphere();
+        this.createMaxRemoteControlRadius();
     }
 
     private createAtmosphere(): void {
         this.scene.add.circle(this.x, this.y, 128, 0x5ea2eb, 0.5);
         this.scene.add.circle(this.x, this.y, 156, 0x5ea2eb, 0.5);
+    }
+
+    private createMaxRemoteControlRadius(): void {
+        let arc = this.scene.add.arc(this.x, this.y, GameConfig.RemoteControlRadius, 0, 360);
+        arc.setStrokeStyle(2, 0xFFFFFF0, 0.25);
     }
 }
