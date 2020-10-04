@@ -19,7 +19,7 @@ export default class Ship extends OrbitalObject {
     private energy = 100;
     private destroyInNextTick = false;
 
-    constructor(scene: GameScene, x: number, y: number,) {
+    constructor(scene: GameScene, x: number, y: number, velocityX = 2, velocityY = -2) {
         super(scene, x, y, 'satellite', 0x00FF00, {
             type: 'circle',
             radius: 16
@@ -28,8 +28,8 @@ export default class Ship extends OrbitalObject {
         this.cursors = this.scene.input.keyboard.createCursorKeys();
 
         this.setMass(8);
-        this.setVelocityX(2);
-        this.setVelocityY(-2);
+        this.setVelocityX(velocityX);
+        this.setVelocityY(velocityY);
         this.setFixedRotation();
 
         this.setScale(0.5);
