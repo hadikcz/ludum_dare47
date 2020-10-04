@@ -3,6 +3,8 @@ import Phaser from "phaser";
 import Asteroid from "entity/Asteroid";
 import {Depths} from "enums/Depths";
 import Planet from "entity/Planet";
+import Point = Phaser.Geom.Point;
+import GameConfig from "config/GameConfig";
 
 export default class Ship extends Phaser.Physics.Matter.Image {
 
@@ -10,6 +12,8 @@ export default class Ship extends Phaser.Physics.Matter.Image {
     private cursors: Phaser.Types.Input.Keyboard.CursorKeys;
     private emitter: Phaser.GameObjects.Particles.ParticleEmitter;
     private particles: Phaser.GameObjects.Particles.ParticleEmitterManager;
+    private loopTrail!: Phaser.Time.TimerEvent;
+    private previousPosition!: Point;
 
     private static readonly EMITTER_GRAVITY = 3000;
 
@@ -50,6 +54,13 @@ export default class Ship extends Phaser.Physics.Matter.Image {
                 console.log('hit with asteroid');
             }
         });
+
+        this.loopTrail = this.scene.time.addEvent({
+            delay: 50,
+            repeat: Infinity,
+            callbackScope: this,
+            callback: this.drawTrail
+        });
     }
 
     update(): void {
@@ -78,6 +89,18 @@ export default class Ship extends Phaser.Physics.Matter.Image {
 
         this.emitter.setGravity(Math.cos(this.angle - Math.PI)  * Ship.EMITTER_GRAVITY, Math.sin(this.rotation - Math.PI) * Ship.EMITTER_GRAVITY);
         this.emitter.setPosition(this.x, this.y);
+
+        let distance = Phaser.Math.Distance.BetweenPoints(this, this.scene.planet);
+        if (distance < GameConfig.Planet.Atmosphere.outer) {
+            this.setFrictionAir(GameConfig.AirFriction.outer);
+            this.setTint(0xFF0000);
+        } else if (distance < GameConfig.AirFriction.inner) {
+            this.setTint(0xFF0000);
+            this.setFrictionAir(GameConfig.AirFriction.outer);
+        } else {
+            this.setTint(0xFFFFFF);
+            this.setFrictionAir(GameConfig.AirFriction.default);
+        }
     }
 
     private enableRcsSystem(): void {
@@ -88,8 +111,19 @@ export default class Ship extends Phaser.Physics.Matter.Image {
         this.setFrictionAir(0);
     }
 
+    private drawTrail(): void {
+        if (!this.previousPosition) {
+            this.previousPosition = new Point(this.x, this.y);
+            return;
+        }
+
+        this.scene.effectManager.launchTrail(this.previousPosition.x, this.previousPosition.y, this.x, this.y, 0x00FF00, 0.25, 1, 1000);
+        this.previousPosition.setTo(this.x, this.y);
+    }
+
     destroy(fromScene?: boolean) {
         super.destroy(fromScene);
         this.emitter.stop();
+        this.loopTrail.destroy();
     }
 }

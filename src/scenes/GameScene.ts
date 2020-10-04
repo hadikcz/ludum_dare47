@@ -11,7 +11,7 @@ export default class GameScene extends Phaser.Scene {
     private ship!: Ship;
     private speedText!: Phaser.GameObjects.Text;
     private asteroidSpawner!: AsteroidSpawner;
-    private planet!: Planet;
+    public planet!: Planet;
     public effectManager!: EffectManager;
 
     constructor () {

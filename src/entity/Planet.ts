@@ -34,5 +34,12 @@ export default class Planet extends Phaser.Physics.Matter.Image {
         this.setStatic(true);
 
         this.setDepth(Depths.PLANET);
+
+        this.createAtmosphere();
+    }
+
+    private createAtmosphere(): void {
+        this.scene.add.circle(this.x, this.y, 128, 0x5ea2eb, 0.5);
+        this.scene.add.circle(this.x, this.y, 156, 0x5ea2eb, 0.5);
     }
 }

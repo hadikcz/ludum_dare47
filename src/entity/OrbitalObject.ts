@@ -1,10 +1,10 @@
 import Phaser from "phaser";
 import GameScene from "scenes/GameScene";
-import Point = Phaser.Geom.Point;
-import {Depths} from "enums/Depths";
 import Planet from "entity/Planet";
+import Point = Phaser.Geom.Point;
+import Asteroid from "entity/Asteroid";
 
-export default class Asteroid extends Phaser.Physics.Matter.Image {
+export default class OrbitalObject extends Phaser.Physics.Matter.Image {
 
     public scene!: GameScene;
 
@@ -12,7 +12,7 @@ export default class Asteroid extends Phaser.Physics.Matter.Image {
 
     private loopTrail!: Phaser.Time.TimerEvent;
 
-    constructor(scene: GameScene, x: number, y: number, initialVelocityX: number, initialVelocityY: number) {
+    constructor(scene: GameScene, x: number, y: number,) {
         super(scene.matter.world, x, y, 'asteroid');
 
         this.scene = scene;
@@ -21,9 +21,6 @@ export default class Asteroid extends Phaser.Physics.Matter.Image {
 
         this.setFrictionAir(0);
         this.setFriction(0);
-        this.setMass(1);
-        this.setVelocityX(initialVelocityX);
-        this.setVelocityY(initialVelocityY);
 
         this.loopTrail = this.scene.time.addEvent({
             delay: 50,
@@ -32,7 +29,6 @@ export default class Asteroid extends Phaser.Physics.Matter.Image {
             callback: this.drawTrail
         });
 
-        this.setDepth(Depths.ASTEROID);
 
         this.on('collide', (a, b): void => {
             if (b.gameObject instanceof Planet || b.gameObject instanceof Asteroid) {
