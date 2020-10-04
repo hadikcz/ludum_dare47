@@ -6,6 +6,7 @@
 html,
 body {
     color: #FFFFFF;
+    background: black;
     word-spacing: 9px;
     /*background: #767474;*/
     overflow: hidden;
