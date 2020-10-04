@@ -71,7 +71,7 @@ export default class Ship extends OrbitalObject {
     private handleControls(): void {
         let distance = Phaser.Math.Distance.BetweenPoints(this, this.scene.planet);
 
-        if (distance > GameConfig.RemoteControlRadius) {
+        if (!this.isInRange()) {
             this.emitter.stop();
             return;
         }
@@ -120,5 +120,10 @@ export default class Ship extends OrbitalObject {
 
     getEnergy(): number {
         return this.energy;
+    }
+
+    isInRange(): boolean {
+        let distance = Phaser.Math.Distance.BetweenPoints(this, this.scene.planet);
+        return distance <= GameConfig.RemoteControlRadius;
     }
 }

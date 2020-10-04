@@ -13,6 +13,7 @@ export default class UI {
 
     update () {
         this.handleShipSpeeds();
+        this.updateUploaded();
     }
 
     show (): void {
@@ -56,5 +57,9 @@ export default class UI {
         } else {
             $('#energy').removeClass('low');
         }
+    }
+
+    private updateUploaded(): void {
+        $('#uploaded').html(`${this.scene.dataUploading.getUploaded()}/${this.scene.dataUploading.getUploadLimit()}GB`);
     }
 }

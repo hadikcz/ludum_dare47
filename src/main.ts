@@ -50,6 +50,7 @@ const config = {
         WinScene
     ]
 };
+window.level = 1;
 const game = new Phaser.Game(config);
 //
 // let stats = new Stats();

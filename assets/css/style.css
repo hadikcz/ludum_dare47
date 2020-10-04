@@ -60,7 +60,8 @@ a {text-decoration: none;}
 
 .warning {
     animation: blinker 0.5s cubic-bezier(.5, 0, 1, 1) infinite alternate;
-    top: 25%;
+    margin-top: 30px;
+    margin-left: 10px;
     font-size: 25px;
     text-align: center;
     color: red;
@@ -87,4 +88,14 @@ a {text-decoration: none;}
     color: lime;
     bottom: 30px;
     margin-left: 10px;
+}
+
+.uploaded {
+    margin-left: 10px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 15px;
+    display: inline-block;
+    text-align: center;
 }

@@ -6,6 +6,7 @@ import Planet from "entity/Planet";
 import UI from "ui/UI";
 import Group = Phaser.GameObjects.Group;
 import Satelite from "entity/Satelite";
+import DataUploading from "core/DataUploading";
 
 declare let window: any;
 
@@ -17,7 +18,7 @@ export default class GameScene extends Phaser.Scene {
     public planet!: Planet;
     public effectManager!: EffectManager;
     public ui!: UI;
-    public level = 1;
+    public dataUploading!: DataUploading;
 
     constructor () {
         super({ key: 'GameScene' });
@@ -33,19 +34,20 @@ export default class GameScene extends Phaser.Scene {
         this.planet = new Planet(this);
         this.ship = new Ship(this, 400, 384, 0, -3.5); // player
 
-        if (this.level > 3) {
-            this.level = 3;
-        } else if (this.level < 1) {
-            this.level = 1;
+        if (window.level > 3) {
+            window.level = 3;
+        } else if (window.level < 1) {
+            window.level = 1;
         }
 
         this.sateliteGroup = this.add.group();
-        for (let i = 0; i < this.level; i++) {
+        for (let i = 0; i < window.level; i++) {
             let orbit = this.getSateliteOrbits()[i];
             let satelite = new Satelite(this, orbit.x, orbit.y, orbit.velX, orbit.velY);
             this.sateliteGroup.add(satelite);
         }
         this.asteroidSpawner = new AsteroidSpawner(this);
+        this.dataUploading = new DataUploading(this, this.getUploadLimit(window.level));
 
         // Debug
         this.matter.add.mouseSpring();
@@ -79,5 +81,17 @@ export default class GameScene extends Phaser.Scene {
                 velY: 2.25
             }
         ];
+    }
+
+    getUploadLimit(level: number): number {
+        switch (level) {
+            case 1:
+                return 45;
+            case 2:
+                return 75;
+            case 3:
+                return 95;
+        }
+        return 45;
     }
 }
