@@ -30,6 +30,7 @@ export default class BootScene extends Phaser.Scene {
         this.load.image('asteroid', 'assets/images/asteroid.png');
         this.load.image('clouds', 'assets/images/clouds.png');
         this.load.image('sky', 'assets/images/sky.png');
+        this.load.image('star', 'assets/images/star.png');
     }
 
     private startGame (): void {

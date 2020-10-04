@@ -1,4 +1,5 @@
 export enum Depths {
+    STAR,
     THRUSTER_PARTICLE,
     ATMOSPHERE,
     PLANET,

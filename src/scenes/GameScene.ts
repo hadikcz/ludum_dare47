@@ -7,6 +7,10 @@ import UI from "ui/UI";
 import Group = Phaser.GameObjects.Group;
 import Satelite from "entity/Satelite";
 import DataUploading from "core/DataUploading";
+import GameConfig from "config/GameConfig";
+import Point = Phaser.Geom.Point;
+import {Depths} from "enums/Depths";
+import NumberHelpers from "helpers/NumberHelpers";
 
 declare let window: any;
 
@@ -48,6 +52,8 @@ export default class GameScene extends Phaser.Scene {
         }
         this.asteroidSpawner = new AsteroidSpawner(this);
         this.dataUploading = new DataUploading(this, this.getUploadLimit(window.level));
+
+        this.createStars();
 
         // Debug
         this.matter.add.mouseSpring();
@@ -93,5 +99,34 @@ export default class GameScene extends Phaser.Scene {
             case 3:
                 return 70;
         }
+    }
+
+    createStars(): void {
+        for (let i = 0; i < 250; i++) {
+            this.createStar(0xFFFFFF);
+        }
+        for (let i = 0; i < 30; i++) {
+            this.createStar(0xff660d);
+        }
+        for (let i = 0; i < 30; i++) {
+            this.createStar(0x34c0eb);
+        }
+    }
+
+    createStar(tint: number): void {
+        let rect = new Phaser.Geom.Rectangle(-500, -500, GameConfig.World.size.width + 1500, GameConfig.World.size.height + 1500);
+        let spawn = rect.getRandomPoint<Point>();
+        let star = this.add.image(spawn.x, spawn.y, 'star')
+            .setDepth(Depths.STAR);
+        let alpha = NumberHelpers.randomFloatInRange(0.3, 0.5);
+        star.setAlpha(alpha);
+        star.setTint(tint);
+        this.tweens.add({
+            targets: star,
+            alpha: alpha + 0.4,
+            duration: NumberHelpers.randomIntInRange(400, 900),
+            yoyo: true,
+            repeat: Infinity
+        });
     }
 }
