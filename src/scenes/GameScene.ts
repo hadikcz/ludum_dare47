@@ -78,6 +78,7 @@ export default class GameScene extends Phaser.Scene {
     update (): void {
         this.ship.update();
         this.ui.update();
+        this.dataUploading.update();
     }
 
     getSateliteOrbits(): any[] {
@@ -107,11 +108,11 @@ export default class GameScene extends Phaser.Scene {
         switch (level) {
             case 1:
             default:
-                return 30;
+                return 60;
             case 2:
-                return 50;
+                return 75;
             case 3:
-                return 70;
+                return 90;
         }
     }
 
