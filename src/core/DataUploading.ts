@@ -43,6 +43,8 @@ export default class DataUploading {
             console.log('game over');
         } else {
             this.scene.ui.showWin();
+// @ts-ignore
+            window.level += 1;
         }
         await delay(5000);
 // @ts-ignore
