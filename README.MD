@@ -3,7 +3,6 @@
 ![Image of game](https://raw.githubusercontent.com/hadikcz/ludum_dare47/main/screens/Screenshot%202020-10-04%20at%2022.54.42.png)
 
 # About game:
-You are owner of the pet shop, and you must take care about your pets, feed them, clean them, and also care about customers. Sell them your pets and for money buy new kinds.
 You are operator of sattelite which will recieve data about incoming big asteroid, you must keep that asteroid near earth, not crash it in atmosphere, avoid another sattelites and asteroids.
 
 # How to play ? / Controls
