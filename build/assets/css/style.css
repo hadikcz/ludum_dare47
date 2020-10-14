@@ -130,7 +130,7 @@ a {text-decoration: none;}
 
 #play {
     position: absolute;
-    top: 520px;
+    top: 570px;
     left: 50%;
     font-size: 45px;
     transform: translateX(-50%);
