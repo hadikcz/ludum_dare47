@@ -48,7 +48,7 @@ export default class DataUploading {
         }
         await delay(5000);
 // @ts-ignore
-        if (window.level === GameConfig.LastLevel) return;
+        if (window.level === GameConfig.LastLevel + 1) return;
         this.scene.ui.hideWin();
         await delay(1000);
         this.scene.scene.restart();
