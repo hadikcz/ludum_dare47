@@ -70,6 +70,7 @@ export default class Ship extends OrbitalObject {
     }
 
     preUpdate(): void {
+        // console.log([this.x, this.y])
         super.update();
         if (this.destroyInNextTick) {
             this.destroy();

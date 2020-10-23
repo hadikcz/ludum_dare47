@@ -43,7 +43,7 @@
     "source-map-loader": "^0.2.4",
     "stats.js": "^0.17.0",
     "webpack": "^4.41.5",
-    "webpack-cli": "^3.3.10",
+    "webpack-cli": "^3.3.12",
     "webpack-node-externals": "^1.7.2"
   },
   "dependencies": {
@@ -55,6 +55,7 @@
     "delay": "^4.4.0",
     "esm": "^3.2.25",
     "eventemitter3": "^4.0.0",
+    "matter-js": "^0.14.2",
     "phaser": "^3.22.0",
     "tmx-parser": "^1.5.0",
     "ts-loader": "^6.2.1",
